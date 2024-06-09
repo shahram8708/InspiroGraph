@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>InspiroGraph - AI Text to Image Generator</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <style>
+        body {
+            background: linear-gradient(to right, #6a11cb, #2575fc, #43cea2, #f5576c, #ff5858);
+            font-family: 'Helvetica Neue', Arial, sans-serif;
+            color: #fff;
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            overflow-x: hidden;
+        }
+
+        .container {
+            background: black;
+            border-radius: 15px;
+            box-shadow: 0 5px 25px rgba(0, 0, 0, 0.2);
+            padding: 40px;
+            margin: 50px auto;
+            width: 90%;
+            max-width: 960px;
+        }
+
+        h1,
+        h2 {
+            background: linear-gradient(to right, #ff5858, #f857a6, #ff5858, #f857a6, #ff5858);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        h2 {
+            font-size: 2.2rem;
+            margin-bottom: 20px;
+        }
+
+        p,
+        li {
+            font-size: 1.1rem;
+            line-height: 1.6;
+        }
+
+        ul {
+            list-style: inside square;
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+        }
+
+        label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+
+        input[type="text"] {
+            width: 100%;
+            padding: 10px;
+            border: 2px solid #ccddee;
+            border-radius: 8px;
+            font-size: 1.1rem;
+            background: rgba(255, 255, 255, 0.8);
+            transition: border-color 0.3s;
+        }
+
+        input[type="text"]:focus {
+            border-color: #888;
+            outline: none;
+        }
+
+        button {
+            width: 100%;
+            padding: 12px 20px;
+            font-size: 1.2rem;
+            border-radius: 8px;
+            border: none;
+            background-image: linear-gradient(to right, #2575fc, #6a11cb, #43cea2, #f5576c, #ff5858);
+            color: white;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        button:hover {
+            background-image: linear-gradient(to right, #6a11cb, #2575fc, #43cea2, #f5576c, #ff5858);
+        }
+
+        .generated-image img {
+            width: 100%;
+            max-width: 100%;
+            border-radius: 8px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .download-btn {
+            display: inline-block;
+            padding: 10px 20px;
+            margin-top: 20px;
+            background-color: #28a745;
+            border: none;
+            border-radius: 8px;
+            color: white;
+            text-decoration: none;
+            font-size: 1.1rem;
+            transition: background-color 0.3s;
+        }
+
+        .download-btn:hover {
+            background-color: #218838;
+        }
+
+        footer {
+            text-align: center;
+            padding: 20px 0;
+            background-color: #f8f9fa;
+            border-top: 1px solid #e9ecef;
+            margin-top: 40px;
+        }
+
+        footer p {
+            color: #6c757d;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1 class="text-center">InspiroGraph - AI Text to Image Generator</h1>
+        <p>Welcome to InspiroGraph – your ultimate AI-powered Text to Image Generator! This website leverages advanced
+            AI technology to transform your text prompts into stunning images. Here’s a step-by-step guide on how to use
+            InspiroGraph and what makes it special.</p>
+        <form id="imageForm" method="post">
+            <div class="form-group">
+                <label for="prompt">Enter your text prompt:</label>
+                <input type="text" class="form-control" id="prompt" name="prompt" required placeholder="Illustrate your vision...">
+            </div>
+            <button type="submit" class="btn btn-primary">Generate Image</button>
+        </form>
+        <p id="loadingMessage" style="display:none;">Processing your request, please wait...</p>
+        {% if image_available %}
+        <div class="generated-image mt-5">
+            <h3>Generated Image:</h3>
+            <img src="{{ url_for('static', filename='output_image.png') }}" alt="Generated Image">
+            <a href="{{ url_for('static', filename='output_image.png') }}" download="generated_image.png"
+                class="btn btn-success">Download Image</a>
+        </div>
+        {% endif %}
+        <h2>How to Use InspiroGraph</h2>
+        <ul>
+            <li><strong>Enter Your Text Prompt:</strong> In the input field provided, type a description of the image
+                you want to generate. For example, "A dragon flying over a medieval castle."</li>
+            <li><strong>Generate Image:</strong> Click the "Generate Image" button to start the AI-powered image
+                generation process.</li>
+            <li><strong>View Your Generated Image:</strong> After a few moments, your generated image will appear below
+                the form.</li>
+            <li><strong>Download Your Image:</strong> Click the "Download Image" button to save the generated image to
+                your device.</li>
+        </ul>
+        <h2>Features of InspiroGraph</h2>
+        <ul>
+            <li><strong>AI-Powered:</strong> InspiroGraph uses advanced AI models to create images based on your text
+                descriptions.</li>
+            <li><strong>User-Friendly Interface:</strong> The website is designed to be simple and intuitive, allowing
+                anyone to generate images effortlessly.</li>
+            <li><strong>High-Quality Images:</strong> Generate high-resolution images that you can use for various
+                purposes, from creative projects to professional presentations.</li>
+            <li><strong>Fast and Efficient:</strong> The AI model quickly processes your input and generates images in a
+                matter of seconds.</li>
+        </ul>
+    </div>
+    <footer>
+        <p>&copy; 2024 InspiroGraph. All rights reserved.</p>
+    </footer>
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+    <script>
+        document.getElementById('imageForm').addEventListener('submit', function (event) {
+            var promptInput = document.getElementById('prompt').value.trim();
+            if (promptInput === '') {
+                alert('Please enter a text prompt before submitting.');
+                event.preventDefault();
+            }
+        });
+
+        document.getElementById('imageForm').addEventListener('submit', function (event) {
+            document.getElementById('loadingMessage').style.display = 'block'; 
+        });
+
+        window.addEventListener('load', function () {
+            document.getElementById('loadingMessage').style.display = 'none';
+        });
+    </script>
+</body>
+
+</html>
