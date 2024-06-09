@@ -5,7 +5,10 @@ import os
 
 app = Flask(__name__)
 
-API_TOKEN = 'r8_TEWKUO0yazE3Ujr2WuFwa6TZ6UrSc5K1uukZw' 
+API_TOKEN = os.environ.get('API_TOKEN')  
+if API_TOKEN is None:
+    raise ValueError("API_TOKEN environment variable is not set")
+
 client = replicate.Client(api_token=API_TOKEN)
 
 @app.route('/', methods=['GET', 'POST'])
